@@ -57,6 +57,7 @@ The `--enable-native-access` flag was necessary to grant my application permissi
 
 == The Password Generation Process  
 The password generation process involved two key steps:
+
 1. Gathering entropy from the native libraries on the system.
 2. Hashing the gathered entropy using SHA-256 to produce a secure, deterministic password.
 
@@ -64,6 +65,7 @@ The use of cryptographic hashing ensured that even if small variations occurred 
 
 == Learning Outcomes  
 Reflecting on this project, here are the main takeaways:
+
 * **Interacting with Native Libraries**: I now feel confident working with system-level APIs and integrating them into Java applications using FFM.
 * **Native Memory Management**: Understanding and managing native memory using Arena and MemorySegment was a key challenge, but one that I overcame through hands-on experimentation.
 * **Cryptographic Techniques**: Implementing SHA-256 hashing to secure the generated passwords allowed me to connect low-level system resources with high-level security practices.
