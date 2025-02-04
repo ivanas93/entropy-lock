@@ -21,6 +21,7 @@ By the end of this project, I successfully built a working password generator th
 The Foreign Function and Memory API was at the core of this project. It allowed me to efficiently call native functions and interact with native memory without the traditional overhead and complexity of JNI.
 
 Key components I explored:
+
 * *Linker*: This is what I used to link and invoke native functions in external libraries.
 * *SymbolLookup*: I used this to find specific native symbols, such as functions and variables, within shared libraries.
 * *Arena*: This was essential for managing native memory allocation and deallocation cleanly, ensuring I avoided memory leaks.
