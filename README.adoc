@@ -1,0 +1,77 @@
+= Native Password Generator Using Java 23 Foreign Function and Memory API
+
+== Introduction: My Journey with Java 23 and Native Libraries  
+When I first embarked on this project, my goal was to dive deep into the new Foreign Function and Memory API (FFM) introduced in Java 23. I had heard a lot about its potential to replace JNI and provide safer, more efficient access to native libraries. This project was an opportunity for me to step out of the managed world of the JVM and explore how Java can directly interact with system resources, manage memory natively, and tap into system-level entropy to generate secure passwords.
+
+As I progressed, I wanted to not only understand the technical mechanics of calling native functions but also create something practical: a password generator powered by native entropy and enhanced with cryptographic techniques. Here’s a breakdown of what I set out to achieve and what I learned along the way.
+
+== What I Wanted to Achieve
+* Learn the fundamentals of calling native functions using the Foreign Function and Memory API.
+* Understand how to manage native memory using Arena and MemorySegment.
+* Generate entropy by accessing native system libraries on Linux, MacOS, and Windows.
+* Create a secure password generator by combining system entropy and cryptographic hashing (SHA-256).
+* Gain practical experience writing unit tests for code interacting with native resources.
+
+== What I Have Achieved
+By the end of this project, I successfully built a working password generator that integrates securely with system-level entropy sources. I now have a solid understanding of Java’s FFM API and its practical applications, and I’ve gained valuable experience managing memory outside the JVM. Below is a deeper dive into the concepts I explored and the results I achieved.
+
+== Key Concepts Covered
+
+=== Foreign Function and Memory API (FFM)  
+The Foreign Function and Memory API was at the core of this project. It allowed me to efficiently call native functions and interact with native memory without the traditional overhead and complexity of JNI.
+
+Key components I explored:
+* *Linker*: This is what I used to link and invoke native functions in external libraries.
+* *SymbolLookup*: I used this to find specific native symbols, such as functions and variables, within shared libraries.
+* *Arena*: This was essential for managing native memory allocation and deallocation cleanly, ensuring I avoided memory leaks.
+* *MemorySegment*: This represented native memory blocks, allowing me to directly read from or write to native memory.
+
+=== Native Libraries  
+Interfacing with native libraries was the most exciting part of this project. I worked with different native APIs across operating systems:
+
+* Linux (`libc.so.6`): Called the `getrandom` function to generate random bytes.
+* MacOS (`libSystem.B.dylib`): Used the `getentropy` function to gather system entropy.
+* Windows (`bcrypt.dll`): Utilized the `BCryptGenRandom` function for generating secure random data.
+
+Each of these libraries taps into system-level entropy sources, such as hardware-based random number generators and system events, which are crucial for generating strong, unpredictable passwords.
+
+== What Is Entropy in Systems and Why Is It Important?  
+Before diving into the implementation, I had to understand the role of entropy in cryptography and secure systems. Entropy, in simple terms, is the measure of randomness available in a system. High entropy means that the data is highly unpredictable, which is exactly what we need for generating secure passwords.
+In this project, I tapped into the system’s native entropy sources to ensure that each password generated is highly secure and resistant to brute-force or prediction attacks.
+
+== Building and Running the Project
+
+=== Prerequisites  
+* Java 23 or higher installed
+* Maven installed
+
+=== Build and Run  
+[source,bash]
+----  
+mvn clean package  
+java --enable-native-access=ALL-UNNAMED -jar target/entropy-lock.jar  
+----  
+
+The `--enable-native-access` flag was necessary to grant my application permission to access native resources.
+
+== The Password Generation Process  
+The password generation process involved two key steps:
+1. Gathering entropy from the native libraries on the system.
+2. Hashing the gathered entropy using SHA-256 to produce a secure, deterministic password.
+
+The use of cryptographic hashing ensured that even if small variations occurred in the entropy collected, the resulting passwords were always of consistent length and secure.
+
+== Learning Outcomes  
+Reflecting on this project, here are the main takeaways:
+* **Interacting with Native Libraries**: I now feel confident working with system-level APIs and integrating them into Java applications using FFM.
+* **Native Memory Management**: Understanding and managing native memory using Arena and MemorySegment was a key challenge, but one that I overcame through hands-on experimentation.
+* **Cryptographic Techniques**: Implementing SHA-256 hashing to secure the generated passwords allowed me to connect low-level system resources with high-level security practices.
+* **Testing Native Interactions**: Writing unit tests for code that interacts with native libraries helped me think about edge cases, memory safety, and proper cleanup of native resources.
+
+== Challenges I Faced  
+One of the main challenges was ensuring proper memory management when working outside the JVM. With Java’s garbage collector out of the picture for native memory, I had to be very careful with allocation and deallocation, ensuring I didn’t leave memory leaks or dangling pointers. Another challenge was handling platform-specific differences when calling native libraries. I had to design the code in a way that adapted to different operating systems without duplicating logic.
+
+== Conclusion  
+This project was more than just an exercise in learning the FFM API. It was a journey into understanding how Java can break out of its managed runtime and interact safely and efficiently with native code. By the end, I had built a working, secure password generator that I’m proud of. But more importantly, I gained a practical understanding of bridging managed and native code, which I can now apply to real-world scenarios where performance and security matter.
+
+For anyone interested in expanding their Java skills, I highly recommend exploring the FFM API—it’s a game-changer for system-level programming in Java!
